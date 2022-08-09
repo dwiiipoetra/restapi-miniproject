@@ -71,16 +71,6 @@ func (r *Repository) Login(context *fiber.Ctx) error {
 		})
 	}
 
-	// create cookie
-	cookie := fiber.Cookie{
-		Name:     "jwt",
-		Value:    token,
-		Expires:  time.Now().Add(time.Hour * 1),
-		HTTPOnly: true,
-	}
-
-	context.Cookie(&cookie)
-
 	context.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "login successfully",
 		"token":   token,
@@ -88,40 +78,52 @@ func (r *Repository) Login(context *fiber.Ctx) error {
 	return nil
 }
 
-func (r *Repository) Logout(context *fiber.Ctx) error {
-	// remove cookie
-	cookie := fiber.Cookie{
-		Name:     "jwt",
-		Value:    "",
-		Expires:  time.Now().Add(-time.Hour), // -time.Hour = expires before one hour
-		HTTPOnly: true,
-	}
-
-	context.Cookie(&cookie)
-
-	return context.JSON(fiber.Map{
-		"message": "logout successfully",
-	})
-}
-
 func (r *Repository) Register(context *fiber.Ctx) error {
-	user := models.Users{}
+	// user := models.Users{}
 
-	err := context.BodyParser(&user)
+	// err := context.BodyParser(&user)
+	// if err != nil {
+	// 	context.Status(http.StatusUnprocessableEntity).JSON(
+	// 		&fiber.Map{"message": "request failed"})
+	// 	return err
+	// }
+
+	// password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
+	// updatedUser := models.Users{
+	// 	Name:     user.Name,
+	// 	Email:    user.Email,
+	// 	Password: password,
+	// }
+
+	// err = r.DB.Create(&updatedUser).Error
+
+	// if err != nil {
+	// 	context.Status(http.StatusBadRequest).JSON(
+	// 		&fiber.Map{"message": "could not create user"})
+	// 	return err
+	// }
+
+	// context.Status(http.StatusOK).JSON(
+	// 	&fiber.Map{"message": "user succesfully created"})
+	// return nil
+
+	var data map[string]string
+
+	err := context.BodyParser(&data)
 	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "request failed"})
 		return err
 	}
 
-	password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
-	updatedUser := models.Users{
-		Name:     user.Name,
-		Email:    user.Email,
+	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+	user := models.Users{
+		Name:     data["name"],
+		Email:    data["email"],
 		Password: password,
 	}
 
-	err = r.DB.Create(&updatedUser).Error
+	err = r.DB.Create(&user).Error
 
 	if err != nil {
 		context.Status(http.StatusBadRequest).JSON(
@@ -129,8 +131,9 @@ func (r *Repository) Register(context *fiber.Ctx) error {
 		return err
 	}
 
-	context.Status(http.StatusOK).JSON(
-		&fiber.Map{"message": "user succesfully created"})
+	context.Status(http.StatusOK).JSON(&fiber.Map{
+		"message": "user succesfully created",
+		"data":    user})
 	return nil
 }
 
@@ -145,15 +148,6 @@ func (r *Repository) CreateMotorcycle(context *fiber.Ctx) error {
 		return err
 	}
 
-	// validator := validator.New()
-	// err = validator.Struct(Motorcycle{})
-
-	// if err != nil {
-	// 	context.Status(http.StatusUnprocessableEntity).JSON(
-	// 		&fiber.Map{"message": err})
-	// 	return err
-	// }
-
 	err = r.DB.Create(&motorcycle).Error
 
 	if err != nil {
@@ -163,7 +157,10 @@ func (r *Repository) CreateMotorcycle(context *fiber.Ctx) error {
 	}
 
 	context.Status(http.StatusOK).JSON(
-		&fiber.Map{"message": "motorcycle succesfully created"})
+		&fiber.Map{
+			"message": "motorcycle succesfully created",
+			"data":    motorcycle,
+		})
 	return nil
 }
 
@@ -280,7 +277,6 @@ func (r *Repository) GetMotorcycle(context *fiber.Ctx) error {
 func (r *Repository) SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 	api.Post("/login", r.Login)
-	app.Post("/logout", r.Logout)
 	api.Post("/register", r.Register)
 	api.Post("/create_motorcycle", middleware.Auth, r.CreateMotorcycle)
 	// api.Post("/create_motorcycle", r.CreateMotorcycle)
