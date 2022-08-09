@@ -15,7 +15,7 @@ go get -u gorm.io/gorm
 go get -u gorm.io/driver/postgres
 ```
 
-### Using bcrypt Package for Password Hashing
+## Using bcrypt Package for Password Hashing
 ```
 go get golang.org/x/crypto/bcrypt
 ```
