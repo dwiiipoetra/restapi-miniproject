@@ -1,74 +1,46 @@
-# Golang Fiber JWT Authentication
+# REST API Mini Project Golang at CAP Celerates 2022
 
-### We use golang jwt authentication for backend
-### Check & setup the vuejs jwt authentication project in the following link.
-[Vue.js JWT Authentication](https://github.com/RakibSiddiquee/vuejs-jwt-auth) 
+Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
 
 ## Install Fiber Framework:
 ```
 go get github.com/gofiber/fiber/v2
 ```
 
-## Install GORM with MySQL:
+## Install GORM with PostgreSQL:
 ```
 go get -u gorm.io/gorm
 ```
 ```
-go get -u gorm.io/driver/mysql
+go get -u gorm.io/driver/postgres
 ```
 
-### We used bcrypt for password hashing
+### Using bcrypt Package for Password Hashing
+```
+go get golang.org/x/crypto/bcrypt
+```
 
-## Run the project
+## Run the Project
 ```
 go run main.go
 ```
-
-### Registration URL:
-```
-http://localhost:8000/api/register
-```
-
-### Login URL:
-```
-http://localhost:8000/api/login
-```
-
-### Get logged in user after login:
-```
-http://localhost:8000/api/user
-```
-
-### Logout URL:
-```
-http://localhost:8000/api/logout
-```
-
-
-
-# REST API Mini Project Golang at CAP Celerates 2022
-
-Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
 
 ## Domain Used
 
 - Motorcycle (CRUD)
 - User (Register, Login)
 
-// func MigrateUsers(db *gorm.DB) error {
-
 ## Use Migrate to Make Table in PostgreSQL 
 
 - Uncomment function MigrateMotorcycles & MigrateUsers on models/motorcycles.go & models/users.go
 - And also uncomment file which calls the migrate function on the main.go
 
-## There are 7 endpoints that can be accessed
+## There are 7 Endpoints that can be Accessed
 
-### Endpoint Post Motorcycle
+### 1. Endpoint Post Motorcycle
 ```
 /api/create_motorcycle
 ```
-
 ### Body
 ```
 {
@@ -78,7 +50,6 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
     "color":"matte blue"
 }
 ```
-
 ### Result
 ```
 {
@@ -92,11 +63,10 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
 }
 ```
 
-### Endpoint Get All Motorcycles
+### 2. Endpoint Get All Motorcycles
 ```
 /api/motorcycles
 ```
-
 ### Result
 ```
 {
@@ -126,11 +96,10 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
 }
 ```
 
-### Endpoint Get Single Motorcycle
+### 3. Endpoint Get Single Motorcycle
 ```
 /api/motorcycle/1
 ```
-
 ### Result
 ```
 {
@@ -145,11 +114,10 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
 }
 ```
 
-### Endpoint Put Motorcycle
+### 4. Endpoint Put Motorcycle
 ```
 /api/update_motorcycle/15
 ```
-
 ### Body
 ```
 {
@@ -159,7 +127,6 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
     "color":"blue"
 }
 ```
-
 ### Result
 ```
 {
@@ -167,24 +134,21 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
 }
 ```
 
-### Endpoint Delete Motorcycle
+### 5. Endpoint Delete Motorcycle
 ```
 /api/delete_motorcycle/15
 ```
-
 ### Result
 ```
 {
     "message": "motorcycle successfully deleted"
 }
-
 ```
 
-### Endpoint Register User
+### 6. Endpoint Register User
 ```
 /api/register
 ```
-
 ### Body
 ```
 {
@@ -193,7 +157,6 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
     "password":"ari"
 }
 ```
-
 ### Result
 ```
 {
@@ -204,4 +167,9 @@ Golang Rest API with Fiber, PostgreSQL, Gorm & JWT
     },
     "message": "user succesfully created"
 }
+```
+
+### 7. Endpoint Login User
+```
+/api/login
 ```
