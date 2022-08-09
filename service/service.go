@@ -15,10 +15,6 @@ import (
 )
 
 type Motorcycle struct {
-	// ModelName   string `json:"model_name" validate:"required"`
-	// MachineType string `json:"machine_type" validate:"required"`
-	// Year        int    `json:"year" validate:"required"`
-	// Color       string `json:"color" validate:"required"`
 	ModelName   string `json:"model_name"`
 	MachineType string `json:"machine_type"`
 	Year        int    `json:"year"`
@@ -79,34 +75,6 @@ func (r *Repository) Login(context *fiber.Ctx) error {
 }
 
 func (r *Repository) Register(context *fiber.Ctx) error {
-	// user := models.Users{}
-
-	// err := context.BodyParser(&user)
-	// if err != nil {
-	// 	context.Status(http.StatusUnprocessableEntity).JSON(
-	// 		&fiber.Map{"message": "request failed"})
-	// 	return err
-	// }
-
-	// password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
-	// updatedUser := models.Users{
-	// 	Name:     user.Name,
-	// 	Email:    user.Email,
-	// 	Password: password,
-	// }
-
-	// err = r.DB.Create(&updatedUser).Error
-
-	// if err != nil {
-	// 	context.Status(http.StatusBadRequest).JSON(
-	// 		&fiber.Map{"message": "could not create user"})
-	// 	return err
-	// }
-
-	// context.Status(http.StatusOK).JSON(
-	// 	&fiber.Map{"message": "user succesfully created"})
-	// return nil
-
 	var data map[string]string
 
 	err := context.BodyParser(&data)
